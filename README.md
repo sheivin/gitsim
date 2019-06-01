@@ -1,5 +1,7 @@
 # gitsim
 
+First try with react native
+
 ## Install (for mac)
 npm install -g react-native-cli
 npm install --save react-navigation
