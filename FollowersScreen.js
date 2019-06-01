@@ -2,7 +2,6 @@ import React, {Component, PureComponent} from 'react';
 import {StyleSheet, Text, View, Button, ActivityIndicator, Image, TextInput,
         AsyncStorage, FlatList, TouchableHighlight} from 'react-native';
 import axios from 'axios';
-// import FollowersResults from './FollowersResults';
 
 class ListItem extends PureComponent {
 

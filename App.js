@@ -20,7 +20,6 @@ import HomeScreen from "./HomeScreen"
 import RepositoriesScreen from "./RepositoriesScreen"
 import FollowingScreen from "./FollowingScreen"
 import FollowersScreen from "./FollowersScreen"
-import FollowersResults from "./FollowersResults"
 import DetailsOtherUser from './DetailsOtherUser';
 
 import axios from 'axios';
