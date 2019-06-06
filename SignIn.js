@@ -92,12 +92,14 @@ export default class SignInScreen extends Component {
       // console.log(response.config.auth['username']);
       username = config.auth['username'];
       password = config.auth['password'];
+      repositoriesURL = data['repos_url'];
       followingURL = data['following_url'].split('{')[0];
       followersURL = data['followers_url'].split('{')[0];
       // this._storeData(username, password, authToken);
       this._saveItem('authToken', authToken);
       this._saveItem('username', username);
       this._saveItem('password', password);
+      this._saveItem('repositories_url', repositoriesURL);
       this._saveItem('following_url', followingURL);
       this._saveItem('followers_url', followersURL);
       this.props.navigation.navigate('App');

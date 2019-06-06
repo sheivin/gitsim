@@ -103,10 +103,7 @@ export default class HomeScreen extends Component {
   }
 
   _followingPressed = () => {
-    console.log(this.state.followingURL);
-    this.props.navigation.navigate('Following', {
-      url: this.state.followingURL,
-    });
+    this.props.navigation.navigate('Following');
   }
 
   _followersPressed = () => {

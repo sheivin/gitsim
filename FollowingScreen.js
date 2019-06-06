@@ -63,7 +63,7 @@ export default class FollowingScreen extends Component {
 
   _fetchInformation = async => {
     this.setState({followingLoaded: false});
-    console.log("url: " + this.state.url);
+    // console.log("url: " + this.state.url);
     axios({
       method: 'get',
       url: this.state.url,
@@ -81,7 +81,7 @@ export default class FollowingScreen extends Component {
 
   _handleResponse = (response) => {
     if (response.status === 200) {
-      console.log(response);
+      // console.log(response);
       this.setState({data: response.data});
       this.setState({followingLoaded: true});
       // this.props.navigation.navigate('FollowersResults', {

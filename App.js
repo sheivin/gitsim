@@ -21,6 +21,7 @@ import RepositoriesScreen from "./RepositoriesScreen"
 import FollowingScreen from "./FollowingScreen"
 import FollowersScreen from "./FollowersScreen"
 import DetailsOtherUser from './DetailsOtherUser';
+import SearchResults from "./SearchResults";
 
 import axios from 'axios';
 
@@ -43,6 +44,7 @@ const HomeStack = createStackNavigator({
 
 const RepositoriesStack = createStackNavigator({
   Repositories: RepositoriesScreen,
+  SearchResults: SearchResults,
 });
 
 const FollowingStack = createStackNavigator({
