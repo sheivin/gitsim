@@ -3,6 +3,29 @@ import {StyleSheet, Text, View, Button, Image, TextInput,
         FlatList, ActivityIndicator, AsyncStorage, TouchableHighlight} from 'react-native';
 import axios from 'axios';
 
+
+function makeUserSearchRequest(url, username, password) {
+  return axios({
+    method: 'get',
+    url: url,
+    auth: {
+      'username': username,
+      'password': password,
+    }
+  });
+}
+
+function makeFollowingRequest(url, username, password) {
+  return axios({
+    method: 'get',
+    url: url,
+    auth: {
+      'username': username,
+      'password': password,
+    }
+  });
+}
+
 export default class SearchBar extends Component {
   constructor(props) {
     super(props);
@@ -11,25 +34,27 @@ export default class SearchBar extends Component {
     };
   }
 
-  _handleResponse = (response, searchType) => {
-    // console.log(response);
-    if (response.status === 200) {
-      this.props.navigateToSearch(response.data.items, searchType);
+  _handleResponse = (searchResponse, searchType, followingResponse) => {
+    // console.log(searchResponse);
+    followingUserList = followingResponse.data.map((item) => {return item.login});
+    // console.log(followingLoginList);
+    if (searchResponse.status === 200) {
+      this.props.navigateToSearch(searchResponse.data.items, searchType, followingUserList);
     }
   }
+
+  // _makeUserSearchRequest(url) {
+  //   return ;
+  // }
 
   _onPressUsers = async => {
     // console.log(this.state.searchTerm);
     // console.log('https://api.github.com/search/users?q=' + this.state.searchTerm);
-    axios({
-      method: 'get',
-      url: 'https://api.github.com/search/users?q=' + this.state.searchTerm,
-      auth: {
-        'username': this.props.username,
-        'password': this.props.password,
-      }
-    })
-    .then(res => this._handleResponse(res, "User"))
+    userSearchUrl = 'https://api.github.com/search/users?q=' + this.state.searchTerm;
+    followingUrl = 'https://api.github.com/users/' + this.props.username + '/following';
+    axios.all([makeUserSearchRequest(userSearchUrl, this.props.username, this.props.password),
+               makeFollowingRequest(followingUrl, this.props.username, this.props.password)])
+    .then(axios.spread((searchRes, followingRes) => this._handleResponse(searchRes, "User", followingRes)))
     .catch(err => {
       console.log('error: ' + err);
     });

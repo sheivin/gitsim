@@ -50,10 +50,13 @@ export default class RepositoriesScreen extends Component {
     };
   }
 
-  navigateToSearch = (items, searchType) => {
+  navigateToSearch = (items, searchType, followingOrStarList) => {
     this.props.navigation.push('SearchResults', {
       data: items,
       searchType: searchType,
+      list: followingOrStarList,
+      username: this.state.username,
+      password: this.state.password,
     });
   }
 
