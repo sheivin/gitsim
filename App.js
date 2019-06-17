@@ -50,11 +50,13 @@ const RepositoriesStack = createStackNavigator({
 const FollowingStack = createStackNavigator({
   Following: FollowingScreen,
   Details: DetailsOtherUser,
+  SearchResults: SearchResults,
 });
 
 const FollowersStack = createStackNavigator({
   Followers: FollowersScreen,
   Details: DetailsOtherUser,
+  SearchResults: SearchResults,
 });
 
 

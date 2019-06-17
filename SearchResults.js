@@ -12,6 +12,11 @@ class UserListItem extends PureComponent {
     }
   }
 
+  componentDidMount() {
+    this.setState({userLogin: this.props.item.login});
+    this.setState({isFollowing: this.props.isAlreadyFollowing});
+  }
+
   // _followUser = async (userLogin) => {
   //   // this.setState({isFollowing: false});
   //   const followToggle = await this.props.followUserRequest(userLogin);
@@ -21,8 +26,12 @@ class UserListItem extends PureComponent {
 
   render() {
     const item = this.props.item;
-    this.setState({userLogin: item})
-    console.log(item);
+    console.log(this.state.userLogin);
+    console.log(this.state.isFollowing);
+    // this.setState({userLogin: item})
+    // console.log(item);
+    // const isAlreadyFollowing = this.props.isAlreadyFollowing;
+    // console.log(isAlreadyFollowing);
     // console.log(searchType);
     // if (searchType === "User") {
     //   console.log(item);
@@ -74,7 +83,7 @@ export default class SearchResults extends Component {
     this.state = {
       username: '',
       password: '',
-
+      followingList: [],
     }
   }
 
@@ -82,16 +91,23 @@ export default class SearchResults extends Component {
     console.log("SearchResults.component");
     this.setState({username: this.props.navigation.getParam('username')});
     this.setState({password: this.props.navigation.getParam('password')});
+    this.setState({followingList: this.props.navigation.getParam('list')});
+    console.log(this.state.followingList);
+    // console.log(this.props.navigation.getParam('list'));
   }
 
   _followUserRequest = async (userToFollow) => {
     console.log("Follow request");
-    console.log(this.state.username);
-    console.log(this.state.password);
+    // console.log(this.state.username);
+    // console.log(this.state.password);
     url = 'https://api.github.com/user/following/' + userToFollow;
+    method = 'put';
+    // if (!this.state.isFollowing) {
+    //   method = 'delete';
+    // }
     console.log(url);
     axios({
-      method: 'put',
+      method: method,
       url: url,
       auth: {
         'username': this.state.username,
@@ -103,9 +119,9 @@ export default class SearchResults extends Component {
     })
     .then((res) => {
       if (res.status === 200) {
-        return true;
-      } else if (res.status === 204) {
-        return false;
+        return !this.state.isFollowing;
+      // } else if (res.status === 204) {
+      //   return false;
       } else {
         console.log("Else");
         return false;
@@ -118,13 +134,14 @@ export default class SearchResults extends Component {
   }
 
 
-  _keyExtractor = (item, index) => index.toString();
+  _keyExtractor = (item, index) => item.login;
 
   _renderUserItem = ({item, index}) => (
     <UserListItem
       item = {item}
-      index = {index.toString()}
+      index = {item.login}
       followUserRequest = {this._followUserRequest}
+      isAlreadyFollowing = {this.state.followingList.indexOf(item.login) > -1 ? true : false}
     />
   );
 
@@ -137,14 +154,16 @@ export default class SearchResults extends Component {
 
   render() {
     const data = this.props.navigation.getParam('data');
-    const list = this.props.navigation.getParam('list');
     const searchType = this.props.navigation.getParam('searchType');
-    console.log(list);
+    // console.log(this.props.navigation.getParam('list'));
+    // this.setState({followingList: this.props.navigation.getParam('list')});
+    // console.log(this.state.followingList.indexOf("LieutenantChips"));
     return (
       <FlatList
         data = {data}
         keyExtractor = {this._keyExtractor}
         renderItem = {searchType === "User" ? this._renderUserItem : this._renderRepoItem}
+        extraData = {this.state.followingList}
       />
     );
   }

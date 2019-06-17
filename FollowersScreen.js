@@ -3,6 +3,8 @@ import {StyleSheet, Text, View, Button, ActivityIndicator, Image, TextInput,
         AsyncStorage, FlatList, TouchableHighlight} from 'react-native';
 import axios from 'axios';
 
+import SearchBar from "./SearchBar";
+
 class ListItem extends PureComponent {
 
   _onPress = () => {
@@ -45,6 +47,16 @@ export default class FollowersScreen extends Component {
       followersLoaded: false,
       data: '',
     };
+  }
+
+  navigateToSearch = (items, searchType, followingOrStarList) => {
+    this.props.navigation.push('SearchResults', {
+      data: items,
+      searchType: searchType,
+      list: followingOrStarList,
+      username: this.state.username,
+      password: this.state.password,
+    });
   }
 
   componentDidMount() {
@@ -145,11 +157,19 @@ export default class FollowersScreen extends Component {
         //   keyExtractor={this._keyExtractor}
         //   renderItem={this._renderItem}
         // />
-        <FlatList
-          data = {followersData}
-          keyExtractor = {this._keyExtractor}
-          renderItem = {this._renderItem}
-        />
+        <View>
+          <SearchBar 
+            username={this.state.username}
+            password={this.state.password}
+            navigateToSearch={this.navigateToSearch}
+          />
+          <View style= {styles.separator} />
+          <FlatList
+            data = {followersData}
+            keyExtractor = {this._keyExtractor}
+            renderItem = {this._renderItem}
+          />
+        </View>
         
 
         // <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
